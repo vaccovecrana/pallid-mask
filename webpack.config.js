@@ -24,7 +24,28 @@ const wpc = {
   module: {
     rules: [
       {test: /\.tsx?$/, use: ["cache-loader", "ts-loader"], exclude: /node_modules/},
-      {test: /\.tsx?$/, enforce: "pre", use: ["tslint-loader"], exclude: /node_modules/}
+      {test: /\.tsx?$/, enforce: "pre", use: ["tslint-loader"], exclude: /node_modules/},
+      {test: /\.css$/, loader: "style-loader!css-loader"},
+      { 
+        test: /\.(ttf|eot|woff2|woff|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "url-loader", options: {limit: 96000, name: "fonts/[hash]-[name].[ext]"}
+      },
+      {
+        test: /\.less$/,
+        use: [
+          {loader: "style-loader"},
+          {loader: "css-loader"},
+          {loader: "less-loader", options: {paths: [nodeModules]}}
+        ]
+      },
+      {
+        test: /\.sass$/,
+        use: [
+          {loader: "style-loader"},
+          {loader: "css-loader"},
+          {loader: "sass-loader", options: {sassOptions: {includePaths: [nodeModules]}}}
+        ]
+      }
     ]
   },
   resolve: {
