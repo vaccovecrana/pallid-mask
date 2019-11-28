@@ -1,0 +1,17 @@
+{
+  "extends": ["tslint:recommended"],
+  "rules": {
+    "interface-name": false,
+    "max-classes-per-file": false,
+    "max-line-length": {"options": [120]},
+    "member-ordering": false,
+    "no-bitwise": false,
+    "no-console": {
+      "severity": "warning",
+      "options": ["debug", "info", "log", "time", "timeEnd", "trace"]
+    },
+    "quotemark": [true, "double"],
+    "semicolon": [true, "never"],
+    "trailing-comma": false
+  }
+}
