@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "A minimal web front-end for cfssl's REST api.",
   "scripts": {
-    "dev": "webpack --mode=development --watch --colors --progress"
+    "dev": "webpack --mode=development --watch --colors --progress",
+    "debug": "cross-env DEBUG=true webpack --mode=development --watch --colors --progress"
   },
   "repository": {
     "type": "git",
@@ -18,13 +19,18 @@
   "author": "Vaccove Crana, LLC.",
   "license": "MIT",
   "dependencies": {
-    "frow": "^3.3.0"
+    "frow": "^3.3.0",
+    "lowdb": "^1.0.0",
+    "node-fetch": "^2.6.0",
+    "spectre.css": "^0.5.8"
   },
   "devDependencies": {
     "@types/express": "^4.17.2",
+    "@types/lowdb": "1.0.7",
     "@types/tape": "^4.2.33",
     "cache-loader": "^4.1.0",
     "copy-webpack-plugin": "^5.0.5",
+    "cross-env": "^6.0.3",
     "css-loader": "^3.2.0",
     "express": "^4.17.1",
     "node-sass": "^4.13.0",

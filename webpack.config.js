@@ -31,15 +31,7 @@ const wpc = {
         loader: "url-loader", options: {limit: 96000, name: "fonts/[hash]-[name].[ext]"}
       },
       {
-        test: /\.less$/,
-        use: [
-          {loader: "style-loader"},
-          {loader: "css-loader"},
-          {loader: "less-loader", options: {paths: [nodeModules]}}
-        ]
-      },
-      {
-        test: /\.sass$/,
+        test: /\.s(a|c)ss$/,
         use: [
           {loader: "style-loader"},
           {loader: "css-loader"},
@@ -59,7 +51,10 @@ const wpc = {
   optimization: {minimize: false},
   plugins: [
     new CopyPlugin([{from: "pm-ui/favicon.ico", to: buildPath}]),
-    new NodemonPlugin({verbose: true, script: path.resolve(buildPath, "api.js")})
+    new NodemonPlugin({
+      nodeArgs: process.env.DEBUG ? ["--inspect-brk"] : [],
+      verbose: true, script: path.resolve(buildPath, "api.js")
+    })
   ]
 }
 
