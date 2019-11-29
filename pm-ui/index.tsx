@@ -30,7 +30,17 @@ class TestShell extends React.Component<{}, {}> {
                   </div>
                 </div>
               </div>
-              <div className="frow">
+
+              <div className="empty">
+                <div className="empty-icon"><i className="icon icon-3x icon-mail"></i></div>
+                <p className="empty-title h5">You have no new messages</p>
+                <p className="empty-subtitle">Click the button to start a conversation</p>
+                <div className="empty-action">
+                  <button className="btn btn-primary">Send a message</button>
+                </div>
+              </div>
+
+              <div className="frow mt-15">
                 <div className="col-md-1-2">
                   <div className="card">
                     <div className="card-header">
