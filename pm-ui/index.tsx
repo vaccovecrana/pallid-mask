@@ -4,22 +4,17 @@ import "pm-ui/css/main.sass"
 import * as React from "react"
 import * as ReactDOM from "react-dom"
 
+import {PmDbSchema} from "pm-schema"
 import {PmCaList, PmNavBar} from "pm-ui/components"
-import {PmContext, pmReducer, PmStore} from "pm-ui/store"
+import {PmContext, pmReducer} from "pm-ui/store"
+
+const initialState: PmDbSchema = {cas: []}
 
 class PmAppShell extends React.Component {
-
-  private str0: PmStore
-
-  constructor() {
-    super()
-    const [state, dispatch] = React.useReducer(pmReducer, {cas: []})
-    this.str0 = {state, dispatch}
-  }
-
   public render() {
+    const [state, dispatch] = React.useReducer(pmReducer, initialState)
     return (
-      <PmContext.Provider value={this.str0}>
+      <PmContext.Provider value={{state, dispatch}}>
         <div className="appContainer">
           <div className="p-16">
             <div className="frow">
