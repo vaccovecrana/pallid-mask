@@ -10,6 +10,16 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
     dispatch(updCa(ca))
   }
 
+  public onSubmit() {
+    const payload = JSON.stringify(this.props.ca)
+    fetch("/v1/ca", {
+      method: "POST",
+      mode: "cors", // no-cors, *cors, same-origin
+      headers: {"Content-Type": "application/json"},
+      body: payload
+    }).then((response) => response.json()).then((data) => console.log(data))
+  }
+
   public render() {
     const {ca} = this.props
     return (
@@ -35,7 +45,9 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
                         })} />
                       <input className="form-input" type="number" value={ca.csrMetadata.key.size} placeholder="Key size"
                         onChange={(e: any) => this.onUpdate({...ca,
-                          csrMetadata: {...ca.csrMetadata, key: {...ca.csrMetadata.key, size: e.target.value}}
+                          csrMetadata: {...ca.csrMetadata,
+                            key: {...ca.csrMetadata.key, size: parseInt(e.target.value, 10)}
+                          }
                         })} />
                     </div>
                   </div>
@@ -67,7 +79,9 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
               </div>
             </div>
             <div className="tile-action">
-              <button className="btn btn-primary">Create</button>
+              <button className="btn btn-primary" onClick={() => this.onSubmit()}>
+                Create
+              </button>
             </div>
           </div>
         </div>
