@@ -8,7 +8,7 @@ import {PmDbSchema} from "pm-schema"
 import {PmCaList, PmNavBar} from "pm-ui/components"
 import {PmContext, pmReducer} from "pm-ui/store"
 
-const initialState: PmDbSchema = {cas: []}
+const initialState: PmDbSchema = {cas: {}}
 
 class PmAppShell extends React.Component {
   public render() {

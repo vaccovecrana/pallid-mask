@@ -14,6 +14,10 @@ export interface PmCertificateAuthority {
   signingConfig?: Config
 }
 
+export interface PmCaIndex {
+  [id: string]: PmCertificateAuthority
+}
+
 export interface PmDbSchema {
-  cas: PmCertificateAuthority[]
+  cas: PmCaIndex
 }

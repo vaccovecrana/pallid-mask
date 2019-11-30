@@ -6,7 +6,7 @@ class DbService {
   public db: low.LowdbSync<PmDbSchema>
   constructor() {
     this.db = low(new FileSync("database.json"))
-    this.db.defaults({cas: []})
+    this.db.defaults({cas: {}})
   }
 }
 
