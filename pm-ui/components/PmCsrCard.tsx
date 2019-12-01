@@ -18,8 +18,7 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
       .then((ca0) => this.onUpdate(ca0))
   }
 
-  public render() {
-    const {ca} = this.props
+  public renderCsrEditor(ca: PmCertificateAuthority) {
     return (
       <div className="card">
         <div className="card-body">
@@ -85,5 +84,38 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
         </div>
       </div>
     )
+  }
+
+  public renderCaInfoCard(ca: PmCertificateAuthority) {
+    const cm = ca.csrMetadata
+    return (
+      <div className="card">
+        <div className="card-body">
+          <div className="tile">
+            <div className="tile-content">
+              <div className="tile-title">
+                {cm.CN} ::&nbsp;
+                <small>
+                  {cm.key.algo}, {cm.key.size}&nbsp;
+                  ({ca.csrMetadata.names.map((n0) => (
+                    [n0.C, n0.L, n0.O, n0.OU, n0.ST].filter((txt) => txt !== undefined).join(", ")
+                  ))})
+                </small>
+                <div className="divider" style={{margin: 0}} />
+              </div>
+              <div className="tile-subtitle">
+
+              </div>
+            </div>
+            <div className="tile-action"></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  public render() {
+    const {ca} = this.props
+    return ca.certificate ? this.renderCaInfoCard(ca) : this.renderCsrEditor(ca)
   }
 }
