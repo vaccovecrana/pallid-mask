@@ -10,7 +10,8 @@ export default class PmCaList extends React.Component {
   public componentDidMount() {
     const {dispatch: d} = React.useContext(PmContext)
     d(lockUi(true))
-    getJson<PmDbSchema>(PmApi.v1Schema, d).then((data) => d(ldSchema(data)))
+    getJson<PmDbSchema>(PmApi.v1Schema, d)
+      .then((data) => data.cas ? d(ldSchema(data)) : {})
   }
 
   public render() {

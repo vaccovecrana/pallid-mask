@@ -47,9 +47,13 @@ export const pmReducer: React.Reducer<PmAppState, PmAction> = (state0: PmAppStat
     case "lockUi": return {...state0, uiLocked: action.payload}
     case "addCa":
       const ca0: PmCertificateAuthority = {
-        id: uuidV4(), csrMetadata: {
+        id: uuidV4(),
+        csrMetadata: {
           CN: "", names: [{}], hosts: [],
-          key: {algo: undefined, size: undefined}
+          key: {algo: undefined, size: undefined},
+        },
+        signingConfig: {
+          signing: {default: {usages: [], ca_constraint: {is_ca: false}}}
         }
       }
       return {...state0, db: {...state0.db, cas: {...state0.db.cas, [ca0.id]: ca0}}}

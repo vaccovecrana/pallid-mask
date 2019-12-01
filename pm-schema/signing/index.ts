@@ -31,8 +31,8 @@ export enum Usage {
 
 export interface CAConstraint {
   is_ca: boolean
-  max_path_len: number
-  max_path_len_zero: boolean
+  max_path_len?: number
+  max_path_len_zero?: boolean
 }
 
 export interface SigningProfile {

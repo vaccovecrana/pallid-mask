@@ -9,7 +9,10 @@ import * as ReactDOM from "react-dom"
 import {PmCaList, PmNavBar, PmUiLock} from "pm-ui/components"
 import {PmAppState, PmContext, pmReducer} from "pm-ui/store"
 
-const initialState: PmAppState = {db: {cas: {}}, uiLocked: false}
+const initialState: PmAppState = {
+  db: {cas: {}},
+  uiLocked: false
+}
 
 class PmAppShell extends React.Component {
   public render() {

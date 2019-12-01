@@ -25,8 +25,14 @@ app.get("/", (req, res) => res.send(`
 </html>
 `))
 
+const asJsonError = (e: any, res: any) => {
+  res.status(500).send(JSON.stringify(e))
+}
+
 app.get(PmApi.v1Schema, (req, res) => {
-  res.type("application/json").send(dbService.readSchemaData())
+  try {
+    res.type("application/json").send(dbService.readSchemaData())
+  } catch (error) { asJsonError(error, res) }
 })
 
 app.post(PmApi.v1Ca, (req, res) => {
@@ -36,7 +42,7 @@ app.post(PmApi.v1Ca, (req, res) => {
     .then((ca1) => {
       dbService.addCa(ca1)
       res.json(ca1)
-    }).catch((err) => res.status(500).send(JSON.stringify(err)))
+    }).catch((err) => asJsonError(err, res))
 })
 
 app.listen(port, () => log.info(`Api started on port [${port}]`))
