@@ -1,5 +1,5 @@
 import {CertificateRequest} from "pm-schema/csr"
-import { Config } from "pm-schema/signing"
+import {Config} from "pm-schema/signing"
 
 export interface PmEncodedCertResponse {
   cert: string
@@ -20,4 +20,8 @@ export interface PmCaIndex {
 
 export interface PmDbSchema {
   cas: PmCaIndex
+}
+
+export enum PmApi {
+  v1Ca = "/v1/ca"
 }

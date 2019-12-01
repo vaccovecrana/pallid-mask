@@ -1,23 +1,21 @@
 import * as React from "react"
 
-import {PmCertificateAuthority} from "pm-schema"
-import {PmContext, updCa} from "pm-ui/store"
+import {PmApi, PmCertificateAuthority} from "pm-schema"
+import {postJsonIo} from "pm-ui/rpc"
+import {lockUi, PmContext, updCa} from "pm-ui/store"
 
 export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthority}> {
 
   public onUpdate(ca: PmCertificateAuthority) {
-    const {dispatch} = React.useContext(PmContext)
-    dispatch(updCa(ca))
+    const {dispatch: d} = React.useContext(PmContext)
+    d(updCa(ca))
   }
 
   public onSubmit() {
-    const payload = JSON.stringify(this.props.ca)
-    fetch("/v1/ca", {
-      method: "POST",
-      mode: "cors", // no-cors, *cors, same-origin
-      headers: {"Content-Type": "application/json"},
-      body: payload
-    }).then((response) => response.json()).then((data) => console.log(data))
+    const {dispatch: d} = React.useContext(PmContext)
+    d(lockUi(true))
+    postJsonIo<PmCertificateAuthority>(PmApi.v1Ca, this.props.ca, d)
+      .then((ca0) => this.onUpdate(ca0))
   }
 
   public render() {

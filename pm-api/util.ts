@@ -1,6 +1,7 @@
 import * as fs from "fs"
 import * as os from "os"
 import * as path from "path"
+import * as pino from "pino"
 
 export const tempFile = (name = "temp_file", data = "", encoding = "utf8"): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -13,3 +14,7 @@ export const tempFile = (name = "temp_file", data = "", encoding = "utf8"): Prom
     })
   })
 }
+
+export const logger = (name: string) => pino({name,
+  level: process.env.NODE_ENV === "development" ? "debug" : "info"
+})
