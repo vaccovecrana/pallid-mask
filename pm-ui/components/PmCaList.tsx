@@ -1,9 +1,17 @@
 import * as React from "react"
 
+import {PmApi, PmDbSchema} from "pm-schema"
 import PmCsrCard from "pm-ui/components/PmCsrCard"
-import {PmContext} from "pm-ui/store"
+import {getJson} from "pm-ui/rpc"
+import {ldSchema, lockUi, PmContext} from "pm-ui/store"
 
 export default class PmCaList extends React.Component {
+
+  public componentDidMount() {
+    const {dispatch: d} = React.useContext(PmContext)
+    d(lockUi(true))
+    getJson<PmDbSchema>(PmApi.v1Schema, d).then((data) => d(ldSchema(data)))
+  }
 
   public render() {
     const {state, dispatch} = React.useContext(PmContext)
@@ -19,7 +27,11 @@ export default class PmCaList extends React.Component {
           </button>
         </div>
       </div>
-    ) : cks.map((cak) => <PmCsrCard ca={state.db.cas[cak]} />)
+    ) : cks.map((cak) => (
+      <div className="mb-15">
+        <PmCsrCard ca={state.db.cas[cak]} />
+      </div>
+    ))
     return (
       <div className="frow">
         <div className="col-md-1-1">

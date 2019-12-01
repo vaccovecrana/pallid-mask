@@ -1,3 +1,4 @@
+import * as fs from "fs"
 import * as low from "lowdb"
 import * as FileSync from "lowdb/adapters/FileSync"
 
@@ -12,8 +13,8 @@ class DbService {
     this.db.defaults({cas: {}})
   }
 
-  public listCa() {
-    return this.db.get("cas").values()
+  public readSchemaData() {
+    return fs.readFileSync("database.json", "utf8").toString()
   }
 
   public addCa(ca: PmCertificateAuthority) {

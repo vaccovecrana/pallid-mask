@@ -9,6 +9,19 @@ export interface PmUserMessage {
   style: "info" | "error"
 }
 
+export interface PmAppState {
+  db: PmDbSchema
+  uiLocked: boolean,
+  lastMessage?: PmUserMessage
+}
+
+export type PmDispatch = (action: PmAction) => void
+
+export interface PmStore {
+  state: PmAppState
+  dispatch: PmDispatch
+}
+
 export type PmAction =
   | {type: "lockUi", payload: boolean}
   | {type: "usrMsg", payload: PmUserMessage}
@@ -16,6 +29,7 @@ export type PmAction =
   | {type: "addCa"}
   | {type: "updCa", payload: PmCertificateAuthority}
   | {type: "delCa", payload: PmCertificateAuthority}
+  | {type: "ldSchema", payload: PmDbSchema}
 
 export const lockUi = (locked: boolean): PmAction => ({type: "lockUi", payload: locked})
 export const usrInfo = (msg: string): PmAction => ({type: "usrMsg", payload: {msg, style: "info"}})
@@ -24,6 +38,7 @@ export const usrMsgClear = (): PmAction => ({type: "usrMsgClear"})
 
 export const updCa = (ca: PmCertificateAuthority): PmAction => ({type: "updCa", payload: ca})
 export const delCa = (ca: PmCertificateAuthority): PmAction => ({type: "delCa", payload: ca})
+export const ldSchema = (db: PmDbSchema): PmAction => ({type: "ldSchema", payload: db})
 
 export const pmReducer: React.Reducer<PmAppState, PmAction> = (state0: PmAppState, action: PmAction): PmAppState => {
   switch (action.type) {
@@ -41,21 +56,9 @@ export const pmReducer: React.Reducer<PmAppState, PmAction> = (state0: PmAppStat
     case "updCa": return {...state0,
       db: {...state0.db, cas: {...state0.db.cas, [action.payload.id]: action.payload}}
     }
+    case "ldSchema": return {...state0, db: action.payload}
   }
   return state0
-}
-
-export interface PmAppState {
-  db: PmDbSchema
-  uiLocked: boolean,
-  lastMessage?: PmUserMessage
-}
-
-export type PmDispatch = (action: PmAction) => void
-
-export interface PmStore {
-  state: PmAppState
-  dispatch: PmDispatch
 }
 
 export const PmContext: Context<PmStore> = React.createContext(undefined)

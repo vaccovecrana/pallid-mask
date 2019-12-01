@@ -23,5 +23,6 @@ export interface PmDbSchema {
 }
 
 export enum PmApi {
+  v1Schema = "/v1/schema",
   v1Ca = "/v1/ca"
 }

@@ -25,9 +25,8 @@ app.get("/", (req, res) => res.send(`
 </html>
 `))
 
-app.get(PmApi.v1Ca, (req, res) => {
-  const caList = dbService.listCa()
-  return res.json(caList)
+app.get(PmApi.v1Schema, (req, res) => {
+  res.type("application/json").send(dbService.readSchemaData())
 })
 
 app.post(PmApi.v1Ca, (req, res) => {
