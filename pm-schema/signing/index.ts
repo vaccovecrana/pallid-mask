@@ -29,6 +29,12 @@ export enum Usage {
   decipher_only = "decipher only"
 }
 
+export const UsageValues: Usage[] = [
+  Usage.signing, Usage.digital_signature, Usage.content_commitment,
+  Usage.key_encipherment, Usage.key_agreement, Usage.data_encipherment,
+  Usage.cert_sign, Usage.crl_sign, Usage.encipher_only, Usage.decipher_only
+]
+
 export interface CAConstraint {
   is_ca: boolean
   max_path_len?: number

@@ -44,7 +44,11 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
                 <div className="divider" style={{margin: 0}} />
               </div>
             </div>
-            <div className="tile-action"></div>
+            <div className="tile-action">
+              <button class="btn btn-action btn-primary btn-sm s-circle">
+                <i class="icon icon-check"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
