@@ -6,6 +6,7 @@ interface PmCaProfileCardProps {
   profileName: string
   profile: SigningProfile
   onChange: (pr0: SigningProfile) => void
+  onChangeName: (profileName: string) => void
 }
 
 export default class PmCaProfileCard extends React.Component<PmCaProfileCardProps> {
@@ -20,18 +21,25 @@ export default class PmCaProfileCard extends React.Component<PmCaProfileCardProp
   }
 
   public render() {
-    const {onChange, profile: pr, profileName} = this.props
+    const {onChange, onChangeName, profile: pr, profileName} = this.props
     return (
       <div className="tile mt-8">
-        <div className="tile-icon">{profileName}</div>
         <div className="tile-content">
           <div className="tile-subtitle">
             <div className="frow">
               <div className="col-md-1-3">
                 <div className="ml-16">
-                  <input className="form-input"
-                    type="text" value={pr.expiry} placeholder="Expiry (hrs)"
-                    onChange={(e: any) => onChange({...pr, expiry: e.target.value})} />
+                  <div className="input-group mx-5">
+                    <input className="form-input" type="text"
+                      value={profileName} placeholder="Profile Name"
+                      onChange={(e: any) => {
+                        const label = e.target.value
+                        if (label !== "") { onChangeName(label) }
+                      }} />
+                    <input className="form-input"
+                      type="text" value={pr.expiry} placeholder="Expiry (hrs)"
+                      onChange={(e: any) => onChange({...pr, expiry: e.target.value})} />
+                  </div>
                 </div>
               </div>
               <div className="col-md-2-3">
@@ -42,9 +50,11 @@ export default class PmCaProfileCard extends React.Component<PmCaProfileCardProp
                       return (
                         <div className="col-xs-1-2">
                           <div className="mx-5">
-                            <input type="checkbox" checked={checked}
-                              onClick={(e: any) => this.onAddUsage(u0, e.target.checked)} />
-                            <i class="form-icon"></i> <span onClick={() => this.onAddUsage(u0, !checked)}>{u0}</span>
+                            <label class="form-checkbox">
+                              <input type="checkbox" checked={checked}
+                                onClick={() => this.onAddUsage(u0, !checked)} />
+                              <i class="form-icon"></i> {u0}
+                            </label>
                           </div>
                         </div>
                       )
