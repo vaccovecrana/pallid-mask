@@ -30,7 +30,7 @@ export default class PmCaProfileCard extends React.Component<PmCaProfileCardProp
               <div className="col-md-1-3">
                 <div className="ml-16">
                   <div className="input-group mx-5">
-                    <input className="form-input" type="text"
+                    <input className="form-input" type="text" disabled={profileName === "default"}
                       value={profileName} placeholder="Profile Name"
                       onChange={(e: any) => {
                         const label = e.target.value

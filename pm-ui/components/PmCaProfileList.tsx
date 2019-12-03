@@ -12,7 +12,7 @@ interface PmCaProfileListProps {
 export default class PmCaProfileList extends React.Component<PmCaProfileListProps> {
   public render() {
     const prIdx = this.props.profiles
-    const prKeys = [...prIdx.keys()]
+    const prKeys = [...prIdx.keys()].filter((pk) => pk !== "")
     return (
       <div className="mt-8">
         {prKeys.map((prk) => {
