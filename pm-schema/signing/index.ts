@@ -26,13 +26,16 @@ export enum Usage {
   cert_sign = "cert sign",
   crl_sign = "crl sign",
   encipher_only = "encipher only",
-  decipher_only = "decipher only"
+  decipher_only = "decipher only",
+  server_auth = "server auth",
+  client_auth = "client auth"
 }
 
 export const UsageValues: Usage[] = [
   Usage.signing, Usage.digital_signature, Usage.content_commitment,
   Usage.key_encipherment, Usage.key_agreement, Usage.data_encipherment,
-  Usage.cert_sign, Usage.crl_sign, Usage.encipher_only, Usage.decipher_only
+  Usage.cert_sign, Usage.crl_sign, Usage.encipher_only, Usage.decipher_only,
+  Usage.server_auth, Usage.client_auth
 ]
 
 export interface CAConstraint {
