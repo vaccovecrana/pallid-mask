@@ -38,6 +38,13 @@ export default class PmCaProfileCard extends React.Component<PmCaProfileCardProp
                       type="text" value={tp.expiry} placeholder="Expiry (hrs)"
                       onChange={(e: any) => onChange({...tp, expiry: e.target.value})} />
                   </div>
+                  <label class="form-switch ml-4">
+                    <input type="checkbox" checked={tp.ca_constraint.is_ca}
+                      onChange={() => onChange({...tp,
+                        ca_constraint: {...tp.ca_constraint, is_ca: !tp.ca_constraint.is_ca}
+                      })} />
+                    <i class="form-icon"></i> Is CA
+                  </label>
                 </div>
               </div>
               <div className="col-md-2-3">

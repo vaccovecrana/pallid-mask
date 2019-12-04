@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import {PmApi, PmCertificateAuthority} from "pm-schema"
-import {postJsonIo} from "pm-ui/rpc"
+import {postJsonIo, putJsonIo} from "pm-ui/rpc"
 import {lockUi, PmContext, updCa} from "pm-ui/store"
 import {nextInt, profilesOf} from "pm-ui/util"
 import PmCaProfileList from "./PmCaProfileList"
@@ -19,6 +19,12 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
     d(lockUi(true))
     postJsonIo<PmCertificateAuthority>(PmApi.v1Ca, this.props.ca, d)
       .then((ca0) => this.onUpdate(ca0))
+  }
+
+  public onSubmitUpdate() {
+    const {dispatch: d} = React.useContext(PmContext)
+    d(lockUi(true))
+    putJsonIo<PmCertificateAuthority>(PmApi.v1Ca, this.props.ca, d)
   }
 
   public renderCsrEditor(ca: PmCertificateAuthority) {
@@ -70,7 +76,10 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
                           })
                         }}> Add Profile
                         </button>
-                        <button className="btn btn-primary btn-sm">Save</button>
+                        <button className="btn btn-primary btn-sm"
+                          onClick={() => this.onSubmitUpdate()}>
+                          Save
+                        </button>
                       </div>
                     </div>
                   </div>

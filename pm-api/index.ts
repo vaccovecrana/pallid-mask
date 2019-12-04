@@ -40,9 +40,15 @@ app.post(PmApi.v1Ca, (req, res) => {
   cfSslService.initCaProc(ca.csrMetadata)
     .then((certificate) => ({...ca, certificate} as PmCertificateAuthority))
     .then((ca1) => {
-      dbService.addCa(ca1)
+      dbService.update(ca1)
       res.json(ca1)
     }).catch((err) => asJsonError(err, res))
+})
+
+app.put(PmApi.v1Ca, (req, res) => {
+  const ca = req.body as PmCertificateAuthority
+  dbService.update(ca)
+  res.json(ca)
 })
 
 app.listen(port, () => log.info(`Api started on port [${port}]`))

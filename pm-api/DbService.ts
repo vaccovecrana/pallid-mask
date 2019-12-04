@@ -17,7 +17,7 @@ class DbService {
     return fs.readFileSync("database.json", "utf8").toString()
   }
 
-  public addCa(ca: PmCertificateAuthority) {
+  public update(ca: PmCertificateAuthority) {
     this.db.set(`cas.${ca.id}`, ca).write()
   }
 }
