@@ -1,9 +1,9 @@
 import * as React from "react"
 
 import {PmApi, PmCertificateAuthority} from "pm-schema"
-import {SigningProfile} from "pm-schema/signing"
 import {postJsonIo} from "pm-ui/rpc"
 import {lockUi, PmContext, updCa} from "pm-ui/store"
+import {nextInt} from "pm-ui/util"
 import PmCaProfileList from "./PmCaProfileList"
 import PmCsrEditor from "./PmCsrEditor"
 
@@ -28,14 +28,17 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
     )
   }
 
+  public nonDefaultProfilesOf(ca: PmCertificateAuthority) {
+    const {signing} = ca.signingConfig
+    return Object.keys(signing.profiles)
+      .filter((pk) => pk !== "default")
+      .map((pk) => signing.profiles[pk])
+  }
+
   public renderCaInfoCard(ca: PmCertificateAuthority) {
     const cm = ca.csrMetadata
-    const sConf = ca.signingConfig.signing
-    const profIdx = new Map<string, SigningProfile>()
-    profIdx.set("default", sConf.default)
-    Object.keys(sConf.profiles || {}).forEach((pk) => {
-      profIdx.set(pk, sConf.profiles[pk])
-    })
+    const {signing} = ca.signingConfig
+    const profiles = [signing.default, ...this.nonDefaultProfilesOf(ca)]
     return (
       <div className="card">
         <div className="card-body">
@@ -60,13 +63,15 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
                             signingConfig: {...ca.signingConfig,
                               signing: {...ca.signingConfig.signing,
                                 profiles: {...ca.signingConfig.signing.profiles,
-                                  new: {usages: [], ca_constraint: {is_ca: false}}
+                                  new: {
+                                    pm_id: nextInt(), pm_tag: "new",
+                                    usages: [], ca_constraint: {is_ca: false}
+                                  }
                                 }
                               }
                             }
                           })
-                        }}>
-                          Add Profile
+                        }}> Add Profile
                         </button>
                         <button className="btn btn-primary btn-sm">Save</button>
                       </div>
@@ -75,14 +80,15 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
                 </div>
                 <div className="divider" style={{margin: 0}} />
               </div>
-              <PmCaProfileList profiles={profIdx} onChange={(prIdx0) => {
+              <PmCaProfileList profiles={profiles} onChange={(pr1) => {
                 const ca0: PmCertificateAuthority = {...ca}
-                ca0.signingConfig.signing.default = prIdx0.get("default")
-                ca0.signingConfig.signing.profiles = {}
-                const profiles = [...prIdx0.keys()].filter((pk) => pk !== "default")
-                profiles.forEach((pk) => {
-                  ca0.signingConfig.signing.profiles[pk] = prIdx0.get(pk)
-                })
+                if (pr1.pm_tag === "default") {
+                  ca.signingConfig.signing.default = pr1
+                } else {
+                  const pr0 = this.nonDefaultProfilesOf(ca).find((pr) => pr.pm_id === pr1.pm_id)
+                  delete ca0.signingConfig.signing.profiles[pr0.pm_tag]
+                  ca0.signingConfig.signing.profiles[pr1.pm_tag] = pr1
+                }
                 this.onUpdate(ca0)
               }} />
             </div>

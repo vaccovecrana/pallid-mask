@@ -42,6 +42,8 @@ export interface CAConstraint {
 }
 
 export interface SigningProfile {
+  pm_id: number
+  pm_tag: string
   usages: Usage[]
   issuer_urls?: string[]
   ocsp_url?: string

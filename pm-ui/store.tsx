@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import {PmCertificateAuthority, PmDbSchema} from "pm-schema"
-import {uuidV4} from "pm-ui/util"
+import {nextInt, uuidV4} from "pm-ui/util"
 import {Context} from "preact"
 
 export interface PmUserMessage {
@@ -53,7 +53,12 @@ export const pmReducer: React.Reducer<PmAppState, PmAction> = (state0: PmAppStat
           key: {algo: undefined, size: undefined},
         },
         signingConfig: {
-          signing: {default: {usages: [], ca_constraint: {is_ca: false}}}
+          signing: {
+            default: {
+              pm_id: nextInt(), pm_tag: "default",
+              usages: [], ca_constraint: {is_ca: false}
+            }, profiles: {}
+          }
         }
       }
       return {...state0, db: {...state0.db, cas: {...state0.db.cas, [ca0.id]: ca0}}}

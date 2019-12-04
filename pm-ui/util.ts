@@ -16,3 +16,10 @@ export const uuidV4 = (): string => {
   }
   return uuid
 }
+
+let i0 = 0
+
+export const nextInt = () => {
+  i0 = i0 + 1
+  return i0
+}
