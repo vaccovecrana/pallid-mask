@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import {PmCertificateAuthority, PmDbSchema} from "pm-schema"
-import {nextInt, uuidV4} from "pm-ui/util"
+import {nextInt, profilesOf, uuidV4} from "pm-ui/util"
 import {Context} from "preact"
 
 export interface PmUserMessage {
@@ -65,7 +65,10 @@ export const pmReducer: React.Reducer<PmAppState, PmAction> = (state0: PmAppStat
     case "updCa": return {...state0,
       db: {...state0.db, cas: {...state0.db.cas, [action.payload.id]: action.payload}}
     }
-    case "ldSchema": return {...state0, db: action.payload}
+    case "ldSchema":
+      Object.keys(action.payload.cas).map((pk) => action.payload.cas[pk])
+        .flatMap((ca) => profilesOf(ca)).forEach((pr) => { pr.pm_id = nextInt() })
+      return {...state0, db: action.payload}
   }
   return state0
 }

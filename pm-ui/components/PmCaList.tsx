@@ -1,19 +1,9 @@
 import * as React from "react"
 
-import {PmApi, PmDbSchema} from "pm-schema"
 import PmCsrCard from "pm-ui/components/PmCsrCard"
-import {getJson} from "pm-ui/rpc"
-import {ldSchema, lockUi, PmContext} from "pm-ui/store"
+import {PmContext} from "pm-ui/store"
 
 export default class PmCaList extends React.Component {
-
-  public componentDidMount() {
-    const {dispatch: d} = React.useContext(PmContext)
-    d(lockUi(true))
-    getJson<PmDbSchema>(PmApi.v1Schema, d)
-      .then((data) => data.cas ? d(ldSchema(data)) : {})
-  }
-
   public render() {
     const {state, dispatch} = React.useContext(PmContext)
     const cks = Object.keys(state.db.cas)

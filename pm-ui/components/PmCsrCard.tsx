@@ -3,7 +3,7 @@ import * as React from "react"
 import {PmApi, PmCertificateAuthority} from "pm-schema"
 import {postJsonIo} from "pm-ui/rpc"
 import {lockUi, PmContext, updCa} from "pm-ui/store"
-import {nextInt} from "pm-ui/util"
+import {nextInt, profilesOf} from "pm-ui/util"
 import PmCaProfileList from "./PmCaProfileList"
 import PmCsrEditor from "./PmCsrEditor"
 
@@ -29,10 +29,7 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
   }
 
   public nonDefaultProfilesOf(ca: PmCertificateAuthority) {
-    const {signing} = ca.signingConfig
-    return Object.keys(signing.profiles)
-      .filter((pk) => pk !== "default")
-      .map((pk) => signing.profiles[pk])
+    return profilesOf(ca).filter((pk) => pk.pm_tag !== "default")
   }
 
   public renderCaInfoCard(ca: PmCertificateAuthority) {
@@ -89,6 +86,11 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
                   delete ca0.signingConfig.signing.profiles[pr0.pm_tag]
                   ca0.signingConfig.signing.profiles[pr1.pm_tag] = pr1
                 }
+                this.onUpdate(ca0)
+              }} onDelete={(pr1) => {
+                const ca0: PmCertificateAuthority = {...ca}
+                const pr0 = this.nonDefaultProfilesOf(ca0).find((pr) => pr.pm_id === pr1.pm_id)
+                delete ca0.signingConfig.signing.profiles[pr0.pm_tag]
                 this.onUpdate(ca0)
               }} />
             </div>

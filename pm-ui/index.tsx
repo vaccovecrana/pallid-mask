@@ -6,8 +6,10 @@ import "pm-ui/css/main.sass"
 import * as React from "react"
 import * as ReactDOM from "react-dom"
 
+import {PmApi, PmDbSchema} from "pm-schema"
 import {PmCaList, PmNavBar, PmUiLock} from "pm-ui/components"
-import {PmAppState, PmContext, pmReducer} from "pm-ui/store"
+import {getJson} from "pm-ui/rpc"
+import {ldSchema, lockUi, PmAppState, PmContext, pmReducer} from "pm-ui/store"
 
 const initialState: PmAppState = {
   db: {cas: {}},
@@ -15,6 +17,14 @@ const initialState: PmAppState = {
 }
 
 class PmAppShell extends React.Component {
+
+  public componentDidMount() {
+    const {dispatch: d} = React.useContext(PmContext)
+    d(lockUi(true))
+    getJson<PmDbSchema>(PmApi.v1Schema, d)
+      .then((data) => data.cas ? d(ldSchema(data)) : {})
+  }
+
   public render() {
     const [state, dispatch] = React.useReducer(pmReducer, initialState)
     return (
