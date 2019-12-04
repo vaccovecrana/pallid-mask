@@ -28,4 +28,4 @@ class CfSslService {
   }
 }
 
-export default new CfSslService
+export default new CfSslService()
