@@ -9,13 +9,17 @@ interface PmCsrEditorProps {
   signingCas: PmCertificateAuthority[]
   onChange: (csr: CertificateRequest) => void
   onDelete: () => void
+  onSelectIssuer: (caId: string, caProfileTag: string) => void
   onSubmit: () => void
 }
 
 export default class PmCsrEditor extends React.Component<PmCsrEditorProps> {
 
   public render() {
-    const {csr, signingCas: sca, onDelete, onSubmit, onChange: onUpdate} = this.props
+    const {
+      csr, signingCas: sca, onDelete,
+      onSelectIssuer, onSubmit, onChange: onUpdate
+    } = this.props
     return (
       <div className="card">
         <div className="card-body">
@@ -31,10 +35,13 @@ export default class PmCsrEditor extends React.Component<PmCsrEditorProps> {
                   </div>
                   <div className="col-xs-2-3">
                     <div className="mx-5">
-                      <select class="form-select">
+                      <select class="form-select" onChange={(e: any) => {
+                        const caId = e.target.value.split(",")
+                        onSelectIssuer(caId[0], caId[1])
+                      }}>
                         <option>Issuer/Profile</option>
                         {sca.flatMap((ca0) => profilesOf(ca0).map((pr0) => ({ca: ca0, pr: pr0}))).map((arr0) => (
-                          <option value={arr0.pr.pm_id}>
+                          <option value={`${arr0.ca.id},${arr0.pr.pm_tag}`}>
                             {arr0.ca.csrMetadata.CN}/{arr0.pr.pm_tag}
                           </option>
                         ))}

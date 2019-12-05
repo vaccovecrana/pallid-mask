@@ -9,6 +9,8 @@ export interface PmEncodedCertResponse {
 
 export interface PmCertificateAuthority {
   id: string
+  issuerId?: string
+  issuerProfileTag?: string
   csrMetadata: CertificateRequest
   certificate?: PmEncodedCertResponse
   signingConfig?: Config

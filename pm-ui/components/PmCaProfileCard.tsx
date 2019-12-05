@@ -36,7 +36,9 @@ export default class PmCaProfileCard extends React.Component<PmCaProfileCardProp
                       }} />
                     <input className="form-input"
                       type="text" value={tp.expiry} placeholder="Expiry (hrs)"
-                      onChange={(e: any) => onChange({...tp, expiry: e.target.value})} />
+                      onChange={(e: any) => onChange({...tp,
+                        expiry: e.target.value === "" ? undefined : e.target.value
+                      })} />
                   </div>
                   <label class="form-switch ml-4">
                     <input type="checkbox" checked={tp.ca_constraint.is_ca}

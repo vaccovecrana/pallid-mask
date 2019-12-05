@@ -37,12 +37,19 @@ app.get(PmApi.v1Schema, (req, res) => {
 
 app.post(PmApi.v1Ca, (req, res) => {
   const ca = req.body as PmCertificateAuthority
-  cfSslService.initCaProc(ca.csrMetadata)
-    .then((certificate) => ({...ca, certificate} as PmCertificateAuthority))
-    .then((ca1) => {
-      dbService.update(ca1)
-      res.json(ca1)
-    }).catch((err) => asJsonError(err, res))
+  if (!ca.issuerId) {
+    cfSslService.initRootCa(ca.csrMetadata)
+      .then((certificate) => ({...ca, certificate}))
+      .then((ca1) => {
+        dbService.update(ca1)
+        res.json(ca1)
+      }).catch((err) => asJsonError(err, res))
+  } else {
+    const parentCa = dbService.loadCa(ca.issuerId)
+    cfSslService.initIntCa(ca.csrMetadata, parentCa, ca.issuerProfileTag)
+      .then(() => res.json({ok: true}))
+      .catch((err) => asJsonError(err, res))
+  }
 })
 
 app.put(PmApi.v1Ca, (req, res) => {

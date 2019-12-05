@@ -34,7 +34,9 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
         Object.keys(state.db.cas).map((ck) => state.db.cas[ck])
           .filter((ca0) => ca0.certificate !== undefined)
         } onSubmit={() => this.onSubmit()} onDelete={() => d(delCa(ca))}
-        onChange={(csr0) => this.onUpdate({...ca, csrMetadata: csr0})} />
+        onChange={(csr0) => this.onUpdate({...ca, csrMetadata: csr0})}
+        onSelectIssuer={(issuerId, issuerProfileTag) => this.onUpdate({...ca, issuerId, issuerProfileTag})}
+      />
     )
   }
 
