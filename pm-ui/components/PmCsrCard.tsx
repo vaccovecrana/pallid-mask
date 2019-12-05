@@ -28,10 +28,12 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
   }
 
   public renderCsrEditor(ca: PmCertificateAuthority) {
-    const {dispatch: d} = React.useContext(PmContext)
+    const {dispatch: d, state} = React.useContext(PmContext)
     return (
-      <PmCsrEditor csr={ca.csrMetadata}
-        onSubmit={() => this.onSubmit()} onDelete={() => d(delCa(ca))}
+      <PmCsrEditor csr={ca.csrMetadata} signingCas={
+        Object.keys(state.db.cas).map((ck) => state.db.cas[ck])
+          .filter((ca0) => ca0.certificate !== undefined)
+        } onSubmit={() => this.onSubmit()} onDelete={() => d(delCa(ca))}
         onChange={(csr0) => this.onUpdate({...ca, csrMetadata: csr0})} />
     )
   }
@@ -51,16 +53,18 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
             <div className="tile-content">
               <div className="tile-title">
                 <div className="frow">
-                  <div className="col-md-3-4">
+                  <div className="col-md-4-5">
                     {cm.CN} ::&nbsp;
-                    <small>
-                      {cm.key.algo}, {cm.key.size}&nbsp;
-                      ({ca.csrMetadata.names.map((n0) => (
-                        [n0.C, n0.L, n0.O, n0.OU, n0.ST].filter((txt) => txt !== undefined).join(", ")
-                      ))})
-                    </small>
+                    <span class="text-secondary">
+                      <small>
+                        {cm.key.algo}, {cm.key.size}&nbsp;
+                        ({ca.csrMetadata.names.map((n0) => (
+                          [n0.C, n0.L, n0.O, n0.OU, n0.ST].filter((txt) => txt !== undefined).join(", ")
+                        ))})
+                      </small>
+                    </span>
                   </div>
-                  <div className="col-md-1-4">
+                  <div className="col-md-1-5">
                     <div className="text-right mb-8">
                       <div className="btn-group btn-group-block">
                         <button className="btn btn-primary btn-sm" onClick={() => {

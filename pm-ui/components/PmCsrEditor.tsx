@@ -1,9 +1,12 @@
 import * as React from "react"
 
+import {PmCertificateAuthority} from "pm-schema"
 import {CertificateRequest} from "pm-schema/csr"
+import { profilesOf } from "pm-ui/util"
 
 interface PmCsrEditorProps {
   csr: CertificateRequest
+  signingCas: PmCertificateAuthority[]
   onChange: (csr: CertificateRequest) => void
   onDelete: () => void
   onSubmit: () => void
@@ -12,17 +15,32 @@ interface PmCsrEditorProps {
 export default class PmCsrEditor extends React.Component<PmCsrEditorProps> {
 
   public render() {
-    const {csr, onDelete, onSubmit, onChange: onUpdate} = this.props
+    const {csr, signingCas: sca, onDelete, onSubmit, onChange: onUpdate} = this.props
     return (
       <div className="card">
         <div className="card-body">
           <div className="tile">
             <div className="tile-content">
               <div className="tile-title mb-15">
-                <div className="input-group mx-5">
-                  <input className="form-input" type="text"
-                    value={csr.CN} placeholder="Common Name"
-                    onChange={(e: any) => onUpdate({...csr, CN: e.target.value})} />
+                <div className="frow">
+                  <div className="col-xs-1-3">
+                    <div className="mx-5">
+                      <input className="form-input" type="text" value={csr.CN} placeholder="Common Name"
+                        onChange={(e: any) => onUpdate({...csr, CN: e.target.value})} />
+                    </div>
+                  </div>
+                  <div className="col-xs-2-3">
+                    <div className="mx-5">
+                      <select class="form-select">
+                        <option>Issuer/Profile</option>
+                        {sca.flatMap((ca0) => profilesOf(ca0).map((pr0) => ({ca: ca0, pr: pr0}))).map((arr0) => (
+                          <option value={arr0.pr.pm_id}>
+                            {arr0.ca.csrMetadata.CN}/{arr0.pr.pm_tag}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="tile-subtitle">
@@ -63,9 +81,11 @@ export default class PmCsrEditor extends React.Component<PmCsrEditorProps> {
                     </button>
                   </div>
                 </div>
+              </div>
+              <div className="frow">
                 <div className="col-xs-1-1">
-                  <div className="text-center mt-16">
-                    <button class="btn btn-action btn-sm s-circle" onClick={() => onDelete()}>
+                  <div className="text-center">
+                    <button class="btn btn-action btn-sm s-circle mt-16" onClick={() => onDelete()}>
                       <i class="icon icon-cross"></i>
                     </button>
                   </div>
