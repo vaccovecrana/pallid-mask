@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import {PmCertificateAuthority, PmDbSchema} from "pm-schema"
+import {PmCaIndex, PmCertificateAuthority, PmDbSchema} from "pm-schema"
 import {nextInt, profilesOf, uuidV4} from "pm-ui/util"
 import {Context} from "preact"
 
@@ -36,6 +36,7 @@ export const usrInfo = (msg: string): PmAction => ({type: "usrMsg", payload: {ms
 export const usrError = (msg: string): PmAction => ({type: "usrMsg", payload: {msg, style: "error"}})
 export const usrMsgClear = (): PmAction => ({type: "usrMsgClear"})
 
+export const addCa = (): PmAction => ({type: "addCa"})
 export const updCa = (ca: PmCertificateAuthority): PmAction => ({type: "updCa", payload: ca})
 export const delCa = (ca: PmCertificateAuthority): PmAction => ({type: "delCa", payload: ca})
 export const ldSchema = (db: PmDbSchema): PmAction => ({type: "ldSchema", payload: db})
@@ -62,6 +63,10 @@ export const pmReducer: React.Reducer<PmAppState, PmAction> = (state0: PmAppStat
         }
       }
       return {...state0, db: {...state0.db, cas: {...state0.db.cas, [ca0.id]: ca0}}}
+    case "delCa":
+      const cas0: PmCaIndex = {...state0.db.cas}
+      delete cas0[action.payload.id]
+      return {...state0, db: {...state0.db, cas: cas0}}
     case "updCa": return {...state0,
       db: {...state0.db, cas: {...state0.db.cas, [action.payload.id]: action.payload}}
     }

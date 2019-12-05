@@ -5,13 +5,14 @@ import {CertificateRequest} from "pm-schema/csr"
 interface PmCsrEditorProps {
   csr: CertificateRequest
   onChange: (csr: CertificateRequest) => void
+  onDelete: () => void
   onSubmit: () => void
 }
 
 export default class PmCsrEditor extends React.Component<PmCsrEditorProps> {
 
   public render() {
-    const {csr, onSubmit, onChange: onUpdate} = this.props
+    const {csr, onDelete, onSubmit, onChange: onUpdate} = this.props
     return (
       <div className="card">
         <div className="card-body">
@@ -19,7 +20,8 @@ export default class PmCsrEditor extends React.Component<PmCsrEditorProps> {
             <div className="tile-content">
               <div className="tile-title mb-15">
                 <div className="input-group mx-5">
-                  <input className="form-input" type="text" value={csr.CN} placeholder="Common Name"
+                  <input className="form-input" type="text"
+                    value={csr.CN} placeholder="Common Name"
                     onChange={(e: any) => onUpdate({...csr, CN: e.target.value})} />
                 </div>
               </div>
@@ -53,9 +55,22 @@ export default class PmCsrEditor extends React.Component<PmCsrEditorProps> {
               </div>
             </div>
             <div className="tile-action">
-              <button className="btn btn-primary" onClick={() => onSubmit()}>
-                Create
-              </button>
+              <div className="frow">
+                <div className="col-xs-1-1">
+                  <div className="text-center">
+                    <button className="btn btn-primary" onClick={() => onSubmit()}>
+                      Create
+                    </button>
+                  </div>
+                </div>
+                <div className="col-xs-1-1">
+                  <div className="text-center mt-16">
+                    <button class="btn btn-action btn-sm s-circle" onClick={() => onDelete()}>
+                      <i class="icon icon-cross"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

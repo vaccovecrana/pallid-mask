@@ -2,7 +2,7 @@ import * as React from "react"
 
 import {PmApi, PmCertificateAuthority} from "pm-schema"
 import {postJsonIo, putJsonIo} from "pm-ui/rpc"
-import {lockUi, PmContext, updCa} from "pm-ui/store"
+import {delCa, lockUi, PmContext, updCa} from "pm-ui/store"
 import {nextInt, profilesOf} from "pm-ui/util"
 import PmCaProfileList from "./PmCaProfileList"
 import PmCsrEditor from "./PmCsrEditor"
@@ -28,8 +28,10 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
   }
 
   public renderCsrEditor(ca: PmCertificateAuthority) {
+    const {dispatch: d} = React.useContext(PmContext)
     return (
-      <PmCsrEditor csr={ca.csrMetadata} onSubmit={() => this.onSubmit()}
+      <PmCsrEditor csr={ca.csrMetadata}
+        onSubmit={() => this.onSubmit()} onDelete={() => d(delCa(ca))}
         onChange={(csr0) => this.onUpdate({...ca, csrMetadata: csr0})} />
     )
   }
@@ -49,7 +51,7 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
             <div className="tile-content">
               <div className="tile-title">
                 <div className="frow">
-                  <div className="col-xs-3-4">
+                  <div className="col-md-3-4">
                     {cm.CN} ::&nbsp;
                     <small>
                       {cm.key.algo}, {cm.key.size}&nbsp;
@@ -58,7 +60,7 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
                       ))})
                     </small>
                   </div>
-                  <div className="col-xs-1-4">
+                  <div className="col-md-1-4">
                     <div className="text-right mb-8">
                       <div className="btn-group btn-group-block">
                         <button className="btn btn-primary btn-sm" onClick={() => {
@@ -76,8 +78,7 @@ export default class PmCsrCard extends React.Component<{ca: PmCertificateAuthori
                           })
                         }}> Add Profile
                         </button>
-                        <button className="btn btn-primary btn-sm"
-                          onClick={() => this.onSubmitUpdate()}>
+                        <button className="btn btn-primary btn-sm" onClick={() => this.onSubmitUpdate()}>
                           Save
                         </button>
                       </div>
