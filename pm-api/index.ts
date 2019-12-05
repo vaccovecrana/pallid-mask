@@ -3,7 +3,7 @@ import * as express from "express"
 import cfSslService from "pm-api/CfSSLService"
 import dbService from "pm-api/DbService"
 import {logger} from "pm-api/util"
-import {PmApi, PmCertificateAuthority} from "pm-schema"
+import {PmApi, PmIdentity} from "pm-schema"
 
 const log = logger("api")
 const app = express()
@@ -36,7 +36,7 @@ app.get(PmApi.v1Schema, (req, res) => {
 })
 
 app.post(PmApi.v1Ca, (req, res) => {
-  const ca = req.body as PmCertificateAuthority
+  const ca = req.body as PmIdentity
   if (!ca.issuerId) {
     cfSslService.initRootCa(ca.csrMetadata)
       .then((certificate) => ({...ca, certificate}))
@@ -53,7 +53,7 @@ app.post(PmApi.v1Ca, (req, res) => {
 })
 
 app.put(PmApi.v1Ca, (req, res) => {
-  const ca = req.body as PmCertificateAuthority
+  const ca = req.body as PmIdentity
   dbService.update(ca)
   res.json(ca)
 })

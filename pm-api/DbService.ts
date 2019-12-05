@@ -2,7 +2,7 @@ import * as fs from "fs"
 import * as low from "lowdb"
 import * as FileSync from "lowdb/adapters/FileSync"
 
-import {PmCertificateAuthority, PmDbSchema} from "pm-schema"
+import {PmDbSchema, PmIdentity} from "pm-schema"
 
 class DbService {
 
@@ -10,19 +10,19 @@ class DbService {
 
   constructor() {
     this.db = low(new FileSync("database.json"))
-    this.db.defaults({cas: {}})
+    this.db.defaults({idn: {}})
   }
 
   public readSchemaData() {
     return fs.readFileSync("database.json", "utf8").toString()
   }
 
-  public loadCa(caId: string): PmCertificateAuthority {
-    return this.db.get("cas").find({id: caId}).value()
+  public loadCa(caId: string): PmIdentity {
+    return this.db.get("idn").find({id: caId}).value()
   }
 
-  public update(ca: PmCertificateAuthority) {
-    this.db.set(`cas.${ca.id}`, ca).write()
+  public update(idn: PmIdentity) {
+    this.db.set(`idn.${idn.id}`, idn).write()
   }
 }
 

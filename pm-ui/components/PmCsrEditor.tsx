@@ -1,12 +1,12 @@
 import * as React from "react"
 
-import {PmCertificateAuthority} from "pm-schema"
+import {PmIdentity} from "pm-schema"
 import {CertificateRequest} from "pm-schema/csr"
 import { profilesOf } from "pm-ui/util"
 
 interface PmCsrEditorProps {
   csr: CertificateRequest
-  signingCas: PmCertificateAuthority[]
+  signingIdn: PmIdentity[]
   onChange: (csr: CertificateRequest) => void
   onDelete: () => void
   onSelectIssuer: (caId: string, caProfileTag: string) => void
@@ -17,7 +17,7 @@ export default class PmCsrEditor extends React.Component<PmCsrEditorProps> {
 
   public render() {
     const {
-      csr, signingCas: sca, onDelete,
+      csr, signingIdn: sca, onDelete,
       onSelectIssuer, onSubmit, onChange: onUpdate
     } = this.props
     return (

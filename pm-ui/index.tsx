@@ -12,7 +12,7 @@ import {getJson} from "pm-ui/rpc"
 import {ldSchema, lockUi, PmAppState, PmContext, pmReducer} from "pm-ui/store"
 
 const initialState: PmAppState = {
-  db: {cas: {}},
+  db: {idn: {}},
   uiLocked: false
 }
 
@@ -22,7 +22,7 @@ class PmAppShell extends React.Component {
     const {dispatch: d} = React.useContext(PmContext)
     d(lockUi(true))
     getJson<PmDbSchema>(PmApi.v1Schema, d)
-      .then((data) => data.cas ? d(ldSchema(data)) : {})
+      .then((data) => data.idn ? d(ldSchema(data)) : {})
   }
 
   public render() {

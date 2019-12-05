@@ -7,7 +7,7 @@ export interface PmEncodedCertResponse {
   key: string
 }
 
-export interface PmCertificateAuthority {
+export interface PmIdentity {
   id: string
   issuerId?: string
   issuerProfileTag?: string
@@ -16,12 +16,12 @@ export interface PmCertificateAuthority {
   signingConfig?: Config
 }
 
-export interface PmCaIndex {
-  [id: string]: PmCertificateAuthority
+export interface PmIdnIndex {
+  [id: string]: PmIdentity
 }
 
 export interface PmDbSchema {
-  cas: PmCaIndex
+  idn: PmIdnIndex
 }
 
 export enum PmApi {

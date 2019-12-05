@@ -1,4 +1,4 @@
-import { PmCertificateAuthority } from "pm-schema"
+import { PmIdentity } from "pm-schema"
 import { SigningProfile } from "pm-schema/signing"
 
 const dec2hex: string[] = []
@@ -26,7 +26,7 @@ export const nextInt = () => {
   return i0
 }
 
-export const profilesOf = (ca: PmCertificateAuthority): SigningProfile[] => {
+export const profilesOf = (ca: PmIdentity): SigningProfile[] => {
   const {signing} = ca.signingConfig
   return [
     signing.default,

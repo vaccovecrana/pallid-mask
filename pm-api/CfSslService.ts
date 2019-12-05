@@ -2,7 +2,7 @@ import {spawn} from "child_process"
 import {StringBuilder } from "typescript-string-operations"
 
 import {logger, tempFile} from "pm-api/util"
-import {PmCertificateAuthority, PmEncodedCertResponse} from "pm-schema"
+import {PmEncodedCertResponse, PmIdentity} from "pm-schema"
 import {CertificateRequest} from "pm-schema/csr"
 
 const log = logger("CfSSLService")
@@ -27,7 +27,7 @@ class CfSslService {
       .then((stdOut) => JSON.parse(stdOut) as PmEncodedCertResponse)
   }
 
-  public initIntCa(csr: CertificateRequest, issuer: PmCertificateAuthority, profileTag: string):
+  public initIntCa(csr: CertificateRequest, issuer: PmIdentity, profileTag: string):
     Promise<PmEncodedCertResponse> {
       const pcaConfigTxt = JSON.stringify(issuer.signingConfig)
       return tempFile("intca_csr", JSON.stringify(csr))
