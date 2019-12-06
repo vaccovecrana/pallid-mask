@@ -1,8 +1,7 @@
 import * as React from "react"
 
-import {PmIdentity} from "pm-schema"
+import {PmIdentity, profilesOf} from "pm-schema"
 import {CertificateRequest} from "pm-schema/csr"
-import {profilesOf} from "pm-ui/util"
 
 interface PmCsrEditorProps {
   csr: CertificateRequest

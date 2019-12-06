@@ -67,6 +67,19 @@ class CfSslService {
         return bundle
       })
   }
+
+  public initIdentity(csr: CertificateRequest, issuer: PmIdentity, profileTag: string): Promise<PmEncodedCertResponse> {
+    const issConfig = JSON.stringify(issuer.signingConfig)
+    return Promise.all([
+      tempFile("ident_csr", JSON.stringify(csr)),
+      tempFile("pca_cert", issuer.certificate.cert),
+      tempFile("pca_key", issuer.certificate.key),
+      tempFile("pca_config", issConfig)
+    ]).then(([identCsr, pcaCert, pcaKey, pcaConfig]) => procSpawn("cfssl", [
+      "gencert", "-ca", pcaCert, "-ca-key", pcaKey, "-config",
+      pcaConfig, "-profile", profileTag, identCsr
+    ])).then((result) => JSON.parse(result) as PmEncodedCertResponse)
+  }
 }
 
 export default new CfSslService()

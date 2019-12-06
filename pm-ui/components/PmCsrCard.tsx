@@ -1,9 +1,9 @@
 import * as React from "react"
 
-import {PmApi, PmIdentity} from "pm-schema"
+import {PmApi, PmIdentity, profilesOf} from "pm-schema"
 import {postJsonIo, putJsonIo} from "pm-ui/rpc"
 import {delIdn, lockUi, PmContext, updIdn} from "pm-ui/store"
-import {nextInt, profilesOf} from "pm-ui/util"
+import {nextInt} from "pm-ui/util"
 import PmCaProfileList from "./PmCaProfileList"
 import PmCsrEditor from "./PmCsrEditor"
 
@@ -73,11 +73,10 @@ export default class PmCsrCard extends React.Component<{ca: PmIdentity}> {
               <div className="tile-title">
                 <div className="frow">
                   <div className="col-md-4-5">
-                    {isCa ? (
-                      <span>
-                        <i class="icon icon-bookmark text-primary"></i> {cm.CN} ::&nbsp;
-                      </span>
-                    ) : <span />}
+                    <span className="text-primary mr-4">
+                      {isCa ? <i class="icon icon-bookmark" /> : <i class="icon icon-message" />}
+                    </span>
+                    &nbsp;{cm.CN} ::&nbsp;
                     <span class="text-secondary">
                       <small>
                         {cm.key.algo}, {cm.key.size}&nbsp;

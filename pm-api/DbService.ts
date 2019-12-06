@@ -17,7 +17,7 @@ class DbService {
     return fs.readFileSync("database.json", "utf8").toString()
   }
 
-  public loadCa(caId: string): PmIdentity {
+  public loadIdentity(caId: string): PmIdentity {
     return this.db.get("idn").find({id: caId}).value()
   }
 

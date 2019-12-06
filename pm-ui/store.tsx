@@ -1,7 +1,7 @@
 import * as React from "react"
 
-import {PmDbSchema, PmIdentity, PmIdnIndex} from "pm-schema"
-import {nextInt, profilesOf, uuidV4} from "pm-ui/util"
+import {PmDbSchema, PmIdentity, PmIdnIndex, profilesOf} from "pm-schema"
+import {nextInt, uuidV4} from "pm-ui/util"
 import {Context} from "preact"
 
 export interface PmUserMessage {

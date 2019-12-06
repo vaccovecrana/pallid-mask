@@ -3,7 +3,7 @@ import * as express from "express"
 import cfSslService from "pm-api/CfSSLService"
 import dbService from "pm-api/DbService"
 import {logger} from "pm-api/util"
-import {PmApi, PmIdentity} from "pm-schema"
+import {PmApi, PmIdentity, profilesOf} from "pm-schema"
 
 const log = logger("api")
 const app = express()
@@ -36,22 +36,32 @@ app.get(PmApi.v1Schema, (req, res) => {
 })
 
 app.post(PmApi.v1Ca, (req, res) => {
-  const ca = req.body as PmIdentity
-  if (!ca.issuerId) {
-    cfSslService.initRootCa(ca.csrMetadata)
-      .then((certificate) => ({...ca, certificate}))
+  const idn = req.body as PmIdentity
+  if (!idn.issuerId) {
+    cfSslService.initRootCa(idn.csrMetadata)
+      .then((certificate) => ({...idn, certificate}))
       .then((ca1) => {
         dbService.update(ca1)
         res.json(ca1)
       }).catch((err) => asJsonError(err, res))
   } else {
-    const parentCa = dbService.loadCa(ca.issuerId)
-    cfSslService.initIntCa(ca.csrMetadata, parentCa, ca.issuerProfileTag)
-      .then((certificate) => ({...ca, certificate}))
-      .then((ca1) => {
-        dbService.update(ca1)
-        res.json(ca1)
-      }).catch((err) => asJsonError(err, res))
+    const parentIdn = dbService.loadIdentity(idn.issuerId)
+    const profile = profilesOf(parentIdn).find((pr0) => pr0.pm_tag === idn.issuerProfileTag)
+    if (profile.ca_constraint && profile.ca_constraint.is_ca) {
+      cfSslService.initIntCa(idn.csrMetadata, parentIdn, idn.issuerProfileTag)
+        .then((certificate) => ({...idn, certificate}))
+        .then((ca1) => {
+          dbService.update(ca1)
+          res.json(ca1)
+        }).catch((err) => asJsonError(err, res))
+    } else {
+      cfSslService.initIdentity(idn.csrMetadata, parentIdn, idn.issuerProfileTag)
+        .then((certificate) => ({...idn, certificate}))
+        .then((idn1) => {
+          dbService.update(idn1)
+          res.json(idn1)
+        }).catch((err) => asJsonError(err, res))
+    }
   }
 })
 

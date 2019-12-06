@@ -1,5 +1,5 @@
 import {CertificateRequest} from "pm-schema/csr"
-import {Config} from "pm-schema/signing"
+import {Config, SigningProfile} from "pm-schema/signing"
 
 export interface PmEncodedCertResponse {
   cert: string
@@ -28,4 +28,12 @@ export interface PmDbSchema {
 export enum PmApi {
   v1Schema = "/v1/schema",
   v1Ca = "/v1/ca"
+}
+
+export const profilesOf = (ca: PmIdentity): SigningProfile[] => {
+  const {signing} = ca.signingConfig
+  return [
+    signing.default,
+    ...Object.keys(signing.profiles).map((pk) => signing.profiles[pk])
+  ]
 }

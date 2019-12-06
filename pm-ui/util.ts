@@ -1,6 +1,3 @@
-import { PmIdentity } from "pm-schema"
-import { SigningProfile } from "pm-schema/signing"
-
 const dec2hex: string[] = []
 for (let i = 0; i <= 15; i++) { dec2hex[i] = i.toString(16) }
 
@@ -24,12 +21,4 @@ let i0 = 0
 export const nextInt = () => {
   i0 = i0 + 1
   return i0
-}
-
-export const profilesOf = (ca: PmIdentity): SigningProfile[] => {
-  const {signing} = ca.signingConfig
-  return [
-    signing.default,
-    ...Object.keys(signing.profiles).map((pk) => signing.profiles[pk])
-  ]
 }
