@@ -1,3 +1,4 @@
+import {ASN1, PEM} from "@fidm/asn1"
 import {spawn} from "child_process"
 import {StringBuilder } from "typescript-string-operations"
 
@@ -27,28 +28,43 @@ class CfSslService {
       .then((stdOut) => JSON.parse(stdOut) as PmEncodedCertResponse)
   }
 
-  public initIntCa(csr: CertificateRequest, issuer: PmIdentity, profileTag: string):
-    Promise<PmEncodedCertResponse> {
-      const pcaConfigTxt = JSON.stringify(issuer.signingConfig)
-      return tempFile("intca_csr", JSON.stringify(csr))
-        .then((intCaCsr) => procSpawn("cfssl", ["genkey", "-initca", intCaCsr])
-          .then((bundle0) => {
-            const bundle = JSON.parse(bundle0) as PmEncodedCertResponse
-            return Promise.all([Promise.resolve(bundle), tempFile("intca_csr_pem", bundle.csr)])
-          })
-        ).then(([bundle, intCaCsrPem]) => Promise.all([
-          Promise.resolve(bundle),
-          Promise.resolve(intCaCsrPem),
-          tempFile("pca_cert", issuer.certificate.cert),
-          tempFile("pca_key", issuer.certificate.key),
-          tempFile("pca_config", pcaConfigTxt)
-        ])).then(([bundle, intCaCsrPem, pcaCert, pcaKey, pcaConfig]) => procSpawn("cfssl", [
+  public isCa(csrRes: PmEncodedCertResponse) {
+    const pems = PEM.parse(Buffer.from(csrRes.cert, "utf-8"))
+    const asn1 = ASN1.fromDER(pems[0].body)
+    const keyUsage = asn1.value[0].value[7].value[0].value[1].value[2].value as Buffer
+    if (keyUsage.length >= 4) {
+      const b0 = keyUsage.readInt8(2)
+      const b1 = keyUsage.readInt8(3)
+      return b0 === 1 && b1 === 1
+    }
+    return false
+  }
+
+  public initIntCa(csr: CertificateRequest, issuer: PmIdentity, profileTag: string): Promise<PmEncodedCertResponse> {
+    const pcaConfigTxt = JSON.stringify(issuer.signingConfig)
+    return tempFile("intca_csr", JSON.stringify(csr))
+      .then((intCaCsr) => procSpawn("cfssl", ["genkey", "-initca", intCaCsr])
+        .then((bundle0) => {
+          const bundle = JSON.parse(bundle0) as PmEncodedCertResponse
+          return Promise.all([Promise.resolve(bundle), tempFile("intca_csr_pem", bundle.csr)])
+        })
+      ).then(([bundle, intCaCsrPem]) => Promise.all([
+        Promise.resolve(bundle),
+        Promise.resolve(intCaCsrPem),
+        tempFile("pca_cert", issuer.certificate.cert),
+        tempFile("pca_key", issuer.certificate.key),
+        tempFile("pca_config", pcaConfigTxt)
+      ])).then(([bundle, intCaCsrPem, pcaCert, pcaKey, pcaConfig]) => Promise.all([
+        Promise.resolve(bundle), procSpawn("cfssl", [
           "sign", "-ca", pcaCert, "-ca-key", pcaKey,
           "--config", pcaConfig, "-profile", profileTag, intCaCsrPem
-        ])).then((result) => {
-          log.info(result)
-          return undefined
-        })
+        ])
+      ])).then(([bundle, result]) => {
+        const signedBundle: PmEncodedCertResponse = JSON.parse(result)
+        bundle.cert = signedBundle.cert
+        bundle.isCa = this.isCa(bundle)
+        return bundle
+      })
   }
 }
 

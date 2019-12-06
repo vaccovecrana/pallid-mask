@@ -5,6 +5,7 @@ export interface PmEncodedCertResponse {
   cert: string
   csr: string
   key: string
+  isCa: boolean
 }
 
 export interface PmIdentity {
