@@ -47,8 +47,11 @@ app.post(PmApi.v1Ca, (req, res) => {
   } else {
     const parentCa = dbService.loadCa(ca.issuerId)
     cfSslService.initIntCa(ca.csrMetadata, parentCa, ca.issuerProfileTag)
-      .then(() => res.json({ok: true}))
-      .catch((err) => asJsonError(err, res))
+      .then((certificate) => ({...ca, certificate}))
+      .then((ca1) => {
+        dbService.update(ca1)
+        res.json(ca1)
+      }).catch((err) => asJsonError(err, res))
   }
 })
 

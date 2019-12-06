@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import PmCsrCard from "pm-ui/components/PmCsrCard"
-import {addCa, PmContext} from "pm-ui/store"
+import {addIdn, PmContext} from "pm-ui/store"
 
 export default class PmCaList extends React.Component {
   public render() {
@@ -13,7 +13,7 @@ export default class PmCaList extends React.Component {
         <p className="empty-title h5">No Identities found</p>
         <p className="empty-subtitle">Start by initializing root identities</p>
         <div className="empty-action">
-          <button className="btn btn-primary" onClick={() => dispatch(addCa())}>
+          <button className="btn btn-primary" onClick={() => dispatch(addIdn())}>
             Create New
           </button>
         </div>
@@ -33,7 +33,7 @@ export default class PmCaList extends React.Component {
             <div className="col-xs-1-7">
               <div className="mt-8 text-right">
                 <button class="btn btn-action btn-sm s-circle"
-                  onClick={() => dispatch(addCa())}>
+                  onClick={() => dispatch(addIdn())}>
                   <i class="icon icon-plus"></i>
                 </button>
               </div>

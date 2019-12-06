@@ -1,6 +1,6 @@
 import {ASN1, PEM} from "@fidm/asn1"
 import {spawn} from "child_process"
-import {StringBuilder } from "typescript-string-operations"
+import {StringBuilder} from "typescript-string-operations"
 
 import {logger, tempFile} from "pm-api/util"
 import {PmEncodedCertResponse, PmIdentity} from "pm-schema"
@@ -9,7 +9,7 @@ import {CertificateRequest} from "pm-schema/csr"
 const log = logger("CfSSLService")
 
 const procSpawn = (executable: string, cmdArgs: string[]): Promise<string> => {
-  log.debug(JSON.stringify(cmdArgs))
+  log.debug(JSON.stringify(cmdArgs, null, 2))
   return new Promise((resolve, reject) => {
     const buffer = new StringBuilder()
     const proc = spawn(executable, cmdArgs)
@@ -26,6 +26,7 @@ class CfSslService {
     return tempFile("ca_csr", JSON.stringify(csr))
       .then((path) => procSpawn("cfssl", ["gencert", "-initca", path]))
       .then((stdOut) => JSON.parse(stdOut) as PmEncodedCertResponse)
+      .then((res) => ({...res, isCa: true}))
   }
 
   public isCa(csrRes: PmEncodedCertResponse) {

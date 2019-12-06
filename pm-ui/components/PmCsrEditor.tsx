@@ -16,7 +16,7 @@ interface PmCsrEditorProps {
 export default class PmCsrEditor extends React.Component<PmCsrEditorProps> {
 
   public render() {
-    const {csr, signingIdn: sca, onDelete, onSelectIssuer, onSubmit, onChange} = this.props
+    const {csr, signingIdn, onDelete, onSelectIssuer, onSubmit, onChange} = this.props
     return (
       <div className="card">
         <div className="card-body">
@@ -37,11 +37,12 @@ export default class PmCsrEditor extends React.Component<PmCsrEditorProps> {
                         onSelectIssuer(caId[0], caId[1])
                       }}>
                         <option>Issuer/Profile</option>
-                        {sca.flatMap((ca0) => profilesOf(ca0).map((pr0) => ({ca: ca0, pr: pr0}))).map((arr0) => (
-                          <option value={`${arr0.ca.id},${arr0.pr.pm_tag}`}>
-                            {arr0.ca.csrMetadata.CN}/{arr0.pr.pm_tag}
-                          </option>
-                        ))}
+                        {signingIdn.flatMap((idn0) => profilesOf(idn0)
+                          .map((pr0) => ({ca: idn0, pr: pr0}))).map((arr0) => (
+                            <option value={`${arr0.ca.id},${arr0.pr.pm_tag}`}>
+                              {arr0.ca.csrMetadata.CN}/{arr0.pr.pm_tag}
+                            </option>
+                          ))}
                       </select>
                     </div>
                   </div>

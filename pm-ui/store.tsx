@@ -36,9 +36,9 @@ export const usrInfo = (msg: string): PmAction => ({type: "usrMsg", payload: {ms
 export const usrError = (msg: string): PmAction => ({type: "usrMsg", payload: {msg, style: "error"}})
 export const usrMsgClear = (): PmAction => ({type: "usrMsgClear"})
 
-export const addCa = (): PmAction => ({type: "addIdn"})
-export const updCa = (ca: PmIdentity): PmAction => ({type: "updIdn", payload: ca})
-export const delCa = (ca: PmIdentity): PmAction => ({type: "delIdn", payload: ca})
+export const addIdn = (): PmAction => ({type: "addIdn"})
+export const updIdn = (idn: PmIdentity): PmAction => ({type: "updIdn", payload: idn})
+export const delIdn = (idn: PmIdentity): PmAction => ({type: "delIdn", payload: idn})
 export const ldSchema = (db: PmDbSchema): PmAction => ({type: "ldSchema", payload: db})
 
 export const pmReducer: React.Reducer<PmAppState, PmAction> = (state0: PmAppState, action: PmAction): PmAppState => {
