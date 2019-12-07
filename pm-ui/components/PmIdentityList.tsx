@@ -21,7 +21,7 @@ export default class PmIdentityList extends React.Component {
     ) : (
       <div className="frow">
         {identities.map((idk) => state.db.idn[idk])
-          .sort((idn0) => idn0.certificate ? -11 : 1)
+          .sort((idn0) => idn0.certificate && idn0.certificate.isCa ? -1 : 1)
           .map((idn0) => (
             <div className={!idn0.certificate || idn0.certificate.isCa ? "col-md-1-1" : "col-md-1-2"}>
               <div className="mb-15 mx-5">
