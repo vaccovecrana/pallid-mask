@@ -28,8 +28,9 @@ export default class PmCaProfileList extends React.Component<PmCaProfileListProp
                   <div className="col-xs-1-4">
                     {tp0.pm_tag !== "default" ? (
                       <div className="text-right">
-                        <button class="btn btn-action btn-sm s-circle"
-                          style={{borderStyle: "none"}} onClick={() => this.props.onDelete(tp0)}>
+                        <button class="btn btn-action btn-sm mt-3"
+                          style={{borderStyle: "none", width: "1em", height: "1em"}}
+                          onClick={() => this.props.onDelete(tp0)}>
                           <i class="icon icon-cross"></i>
                         </button>
                       </div>

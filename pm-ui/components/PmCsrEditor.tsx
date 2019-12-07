@@ -12,7 +12,19 @@ interface PmCsrEditorProps {
   onSubmit: () => void
 }
 
-export default class PmCsrEditor extends React.Component<PmCsrEditorProps> {
+export default class PmCsrEditor extends React.Component<PmCsrEditorProps, {hostTxt: string}> {
+
+  constructor() {
+    super()
+    this.state = {hostTxt: ""}
+  }
+
+  public onAddHostName(hn: string) {
+    if (hn !== "") {
+      const {csr, onChange} = this.props
+      this.setState({hostTxt: ""}, () => onChange({...csr, hosts: [...csr.hosts, hn] }))
+    }
+  }
 
   public render() {
     const {csr, signingIdn, onDelete, onSelectIssuer, onSubmit, onChange} = this.props
@@ -48,7 +60,7 @@ export default class PmCsrEditor extends React.Component<PmCsrEditorProps> {
                 </div>
               </div>
               <div className="tile-subtitle">
-                <div className="frow">
+                <div className="frow mb-16">
                   <div className="col-md-1-3">
                     <div className="input-group mx-5">
                       <input className="form-input" type="text" value={csr.key.algo} placeholder="Key algo"
@@ -71,6 +83,28 @@ export default class PmCsrEditor extends React.Component<PmCsrEditorProps> {
                         onChange={(e: any) => onChange({...csr, names: [{...csr.names[0], OU: e.target.value}]})} />
                       <input className="form-input" type="text" value={csr.names[0].ST} placeholder="State"
                         onChange={(e: any) => onChange({...csr, names: [{...csr.names[0], ST: e.target.value}]})} />
+                    </div>
+                  </div>
+                </div>
+                <div className="frow">
+                  <div className="col-md-1-3">
+                    <div className="input-group mx-5">
+                      <input className="form-input" type="text" placeholder="hosts" value={this.state.hostTxt}
+                        onChange={(e: any) => this.setState({hostTxt: e.target.value})} />
+                      <button className="btn input-group-btn" onClick={() => this.onAddHostName(this.state.hostTxt)}>
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col-md-2-3">
+                    <div className="mx-5">
+                      {csr.hosts.map((hostName) => (
+                        <span class="chip">
+                          {hostName}
+                          <a class="btn btn-clear" href="#" aria-label="Delete" role="button"
+                            onClick={() => onChange({...csr, hosts: csr.hosts.filter((hn0) => hn0 !== hostName)})} />
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>

@@ -61,7 +61,7 @@ export default class PmCsrCard extends React.Component<{ca: PmIdentity}> {
   }
 
   public renderCaInfoCard(idn: PmIdentity) {
-    const cm = idn.csrMetadata
+    const csr = idn.csrMetadata
     const isCa = idn.certificate && idn.certificate.isCa
     const {signing} = idn.signingConfig
     const profiles = [signing.default, ...this.nonDefaultProfilesOf(idn)]
@@ -76,10 +76,10 @@ export default class PmCsrCard extends React.Component<{ca: PmIdentity}> {
                     <span className="text-primary mr-4">
                       {isCa ? <i class="icon icon-bookmark" /> : <i class="icon icon-message" />}
                     </span>
-                    &nbsp;{cm.CN} ::&nbsp;
+                    &nbsp;{csr.CN} ::&nbsp;
                     <span class="text-secondary">
                       <small>
-                        {cm.key.algo}, {cm.key.size}&nbsp;
+                        {csr.key.algo}, {csr.key.size}&nbsp;
                         ({idn.csrMetadata.names.map((n0) => (
                           [n0.C, n0.L, n0.O, n0.OU, n0.ST].filter((txt) => txt !== undefined).join(", ")
                         ))})
@@ -120,7 +120,11 @@ export default class PmCsrCard extends React.Component<{ca: PmIdentity}> {
                   delete ca0.signingConfig.signing.profiles[pr0.pm_tag]
                   this.onUpdate(ca0)
                 }} />
-              ) : <div />}
+              ) : (
+                <div className="mt-16">
+                  {csr.hosts.map((hn0) => <span class="chip">{hn0}</span>)}
+                </div>
+              )}
             </div>
           </div>
         </div>
