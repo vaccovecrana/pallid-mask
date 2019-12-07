@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import {SigningProfile} from "pm-schema/signing"
-import PmCaProfileCard from "./PmCaProfileCard"
+import PmProfileEditor from "./PmProfileEditor"
 
 interface PmCaProfileListProps {
   profiles: SigningProfile[]
@@ -23,7 +23,7 @@ export default class PmCaProfileList extends React.Component<PmCaProfileListProp
                 <div className="frow">
                   <div className="col-xs-3-4">
                     <i class="icon icon-arrow-right mr-1"></i>
-                    Profile :: {tp0.pm_tag}
+                    Profile: {tp0.pm_tag}
                   </div>
                   <div className="col-xs-1-4">
                     {tp0.pm_tag !== "default" ? (
@@ -39,7 +39,7 @@ export default class PmCaProfileList extends React.Component<PmCaProfileListProp
                 </div>
               </label>
               <div className="accordion-body">
-                <PmCaProfileCard profile={tp0} onChange={(tp1) => this.props.onChange(tp1)} />
+                <PmProfileEditor profile={tp0} onChange={(tp1) => this.props.onChange(tp1)} />
               </div>
             </div>
           )

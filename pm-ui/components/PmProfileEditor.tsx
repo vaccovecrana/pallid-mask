@@ -2,12 +2,12 @@ import * as React from "react"
 
 import {SigningProfile, Usage, UsageValues} from "pm-schema/signing"
 
-interface PmCaProfileCardProps {
+interface PmProfileEditorProps {
   profile: SigningProfile
   onChange: (pr0: SigningProfile) => void
 }
 
-export default class PmCaProfileCard extends React.Component<PmCaProfileCardProps> {
+export default class PmProfileEditor extends React.Component<PmProfileEditorProps> {
 
   public onSetUsage(u: Usage, doAdd: boolean) {
     const pr0 = this.props.profile

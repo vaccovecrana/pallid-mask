@@ -7,7 +7,7 @@ import * as React from "react"
 import * as ReactDOM from "react-dom"
 
 import {PmApi, PmDbSchema} from "pm-schema"
-import {PmCaList, PmNavBar, PmUiLock} from "pm-ui/components"
+import {PmIdentityList, PmNavBar, PmUiLock} from "pm-ui/components"
 import {getJson} from "pm-ui/rpc"
 import {ldSchema, lockUi, PmAppState, PmContext, pmReducer} from "pm-ui/store"
 
@@ -34,7 +34,7 @@ class PmAppShell extends React.Component {
             <div className="frow">
               <div className="col-md-5-6">
                 <PmNavBar />
-                <PmCaList />
+                <PmIdentityList />
               </div>
             </div>
           </div>
