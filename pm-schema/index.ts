@@ -25,9 +25,12 @@ export interface PmDbSchema {
   idn: PmIdnIndex
 }
 
+export const v1IdnBundleIdnIdParam = ":idnId"
+
 export enum PmApi {
   v1Schema = "/v1/schema",
-  v1Ca = "/v1/ca"
+  v1Idn = "/v1/idn",
+  v1IdnBundle = "/v1/idn/bundle/:idnId"
 }
 
 export const profilesOf = (ca: PmIdentity): SigningProfile[] => {

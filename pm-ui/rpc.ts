@@ -1,14 +1,13 @@
 import {lockUi, PmDispatch, usrError} from "pm-ui/store"
 
 const onJsonResponse = <T>(response: Response, d: PmDispatch): Promise<T> => {
-  return response.json()
-    .then((jData) => {
-      if (!response.ok) { throw jData }
-      return jData as T
-    }).catch((err) => {
-      d(usrError(err))
-      throw err
-    }).finally(() => d(lockUi(false)))
+  return response.json().then((jData) => {
+    if (!response.ok) { throw jData }
+    return jData as T
+  }).catch((err) => {
+    d(usrError(err))
+    throw err
+  }).finally(() => d(lockUi(false)))
 }
 
 export const getJson = <T>(url: string, d: PmDispatch): Promise<T> => {

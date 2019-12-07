@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import {PmApi, PmIdentity, profilesOf} from "pm-schema"
+import {PmApi, PmIdentity, profilesOf, v1IdnBundleIdnIdParam} from "pm-schema"
 import {postJsonIo, putJsonIo} from "pm-ui/rpc"
 import {delIdn, lockUi, PmContext, updIdn} from "pm-ui/store"
 import {nextInt} from "pm-ui/util"
@@ -22,14 +22,14 @@ export default class PmCsrCard extends React.Component<PmCsrCardProps> {
   public onSubmit() {
     const {dispatch: d} = React.useContext(PmContext)
     d(lockUi(true))
-    postJsonIo<PmIdentity>(PmApi.v1Ca, this.props.idn, d)
+    postJsonIo<PmIdentity>(PmApi.v1Idn, this.props.idn, d)
       .then((ca0) => this.onUpdate(ca0))
   }
 
   public onSubmitUpdate() {
     const {dispatch: d} = React.useContext(PmContext)
     d(lockUi(true))
-    putJsonIo<PmIdentity>(PmApi.v1Ca, this.props.idn, d)
+    putJsonIo<PmIdentity>(PmApi.v1Idn, this.props.idn, d)
   }
 
   public renderCsrEditor() {
@@ -126,7 +126,9 @@ export default class PmCsrCard extends React.Component<PmCsrCardProps> {
                             Save
                           </button>
                         ] : []}
-                        <button class="btn btn-action btn-sm">
+                        <button class="btn btn-action btn-sm" onClick={() => {
+                          window.open(PmApi.v1IdnBundle.replace(v1IdnBundleIdnIdParam, idn.id))
+                        }}>
                           <i class="icon icon-download"></i>
                         </button>
                       </div>

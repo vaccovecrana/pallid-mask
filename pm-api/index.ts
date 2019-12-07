@@ -35,7 +35,7 @@ app.get(PmApi.v1Schema, (req, res) => {
   } catch (error) { asJsonError(error, res) }
 })
 
-app.post(PmApi.v1Ca, (req, res) => {
+app.post(PmApi.v1Idn, (req, res) => {
   const idn = req.body as PmIdentity
   if (!idn.issuerId) {
     cfSslService.initRootCa(idn.csrMetadata)
@@ -65,10 +65,15 @@ app.post(PmApi.v1Ca, (req, res) => {
   }
 })
 
-app.put(PmApi.v1Ca, (req, res) => {
+app.put(PmApi.v1Idn, (req, res) => {
   const ca = req.body as PmIdentity
   dbService.update(ca)
   res.json(ca)
+})
+
+app.get(PmApi.v1IdnBundle, (req, res) => {
+  const {idnId} = req.params
+  dbService.bundleFor(idnId).then((bundlePath) => res.download(bundlePath))
 })
 
 app.listen(port, () => log.info(`Api started on port [${port}]`))
