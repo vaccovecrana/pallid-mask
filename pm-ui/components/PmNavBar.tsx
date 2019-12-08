@@ -1,5 +1,7 @@
 import * as React from "react"
 
+import * as appMeta from "../../package.json"
+
 export default class PmNavBar extends React.Component {
   public render() {
     return (
@@ -13,10 +15,11 @@ export default class PmNavBar extends React.Component {
                 <a className="btn btn-link" href="https://github.com/picturepan2/spectre">GitHub</a>
               </section>
               <section className="navbar-section">
-                <div className="input-group input-inline">
-                  <input className="form-input" type="text" placeholder="search"/>
-                  <button className="btn btn-primary input-group-btn">Search</button>
-                </div>
+                <small>
+                  <pre>
+                    v{process.env.NODE_ENV === "development" ? 999 : appMeta.version}
+                  </pre>
+                </small>
               </section>
             </header>
           </div>

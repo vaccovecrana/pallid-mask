@@ -48,7 +48,6 @@ const wpc = {
       "react-dom": path.resolve(nodeModules, "preact/compat")
     }
   },
-  optimization: {minimize: false},
   plugins: [
     new CopyPlugin([{from: "pm-ui/favicon.ico", to: buildPath}]),
     new NodemonPlugin({
