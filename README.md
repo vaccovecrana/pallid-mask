@@ -8,6 +8,8 @@ All certificate data is maintained inside a single JSON database file, which is 
 
 ## Usage
 
+To start, make sure that the `cfssl` executable is available in the host where `pallid-mask` will run in.
+
 After installing the project's dependencies via `npm install`, run a production bundle as follows:
 
     npm run build
