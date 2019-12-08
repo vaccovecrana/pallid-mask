@@ -18,3 +18,8 @@ export const tempFile = (name = "temp_file", data = "", encoding = "utf8"): Prom
 export const logger = (name: string) => pino({name,
   level: process.env.NODE_ENV === "development" ? "debug" : "info"
 })
+
+export const config = {
+  dbFile: path.resolve(process.env.PM_DB_FILE || "./database.json"),
+  port: process.env.PM_HTTP_PORT || 3000
+}

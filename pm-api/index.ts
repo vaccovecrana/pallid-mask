@@ -2,12 +2,11 @@ import * as express from "express"
 
 import cfSslService from "pm-api/CfSSLService"
 import dbService from "pm-api/DbService"
-import {logger} from "pm-api/util"
+import {config, logger} from "pm-api/util"
 import {PmApi, PmIdentity, profilesOf} from "pm-schema"
 
 const log = logger("api")
 const app = express()
-const port = 3000
 const contentPath = process.env.NODE_ENV === "production" ? "." : "build"
 
 app.use(express.json())
@@ -76,4 +75,5 @@ app.get(PmApi.v1IdnBundle, (req, res) => {
   dbService.bundleFor(idnId).then((bundlePath) => res.download(bundlePath))
 })
 
-app.listen(port, () => log.info(`Api started on port [${port}]`))
+log.info(`Runtime config:\n${JSON.stringify(config, null, 2)}`)
+app.listen(config.port, () => log.info(`Api started on port [${config.port}]`))

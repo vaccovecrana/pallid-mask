@@ -75,8 +75,8 @@ export default class PmCsrCard extends React.Component<PmCsrCardProps> {
           <div className="col-xs-1-5">Issuer</div>
           <div className="col-xs-4-5">
             <pre style={{
-              marginTop: 3, marginLeft: 8,
-              marginBottom: 0, marginRight: 0, fontSize: 11
+              marginTop: 0, marginLeft: 8,
+              marginBottom: 0, marginRight: 0, fontSize: 14
             }}>
               {issuer.csrMetadata.CN}
             </pre>

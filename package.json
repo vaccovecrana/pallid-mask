@@ -3,8 +3,8 @@
   "version": "0.8.0",
   "description": "A minimal web front-end for cfssl's REST api.",
   "scripts": {
-    "dev": "webpack --mode=development --watch --colors --progress",
-    "debug": "cross-env DEBUG=true webpack --mode=development --watch --colors --progress"
+    "dev": "webpack --mode=development --watch --colors --progress | pino-pretty",
+    "debug": "cross-env DEBUG=true webpack --mode=development --watch --colors --progress | pino-pretty"
   },
   "repository": {
     "type": "git",
