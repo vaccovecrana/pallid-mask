@@ -1,12 +1,14 @@
 import * as React from "react"
 
+import {idnTypeOf} from "pm-schema"
 import PmCsrCard from "pm-ui/components/PmCsrCard"
 import {addIdn, PmContext} from "pm-ui/store"
 
 export default class PmIdentityList extends React.Component {
   public render() {
     const {state, dispatch} = React.useContext(PmContext)
-    const identities = Object.keys(state.db.idn)
+    const identities = Object.keys(state.db.idn).map((idk) => state.db.idn[idk])
+      .sort((idn0, idn1) => idnTypeOf(idn0) - idnTypeOf(idn1))
     const el = identities.length === 0 ? (
       <div className="empty">
         <div className="empty-icon"><i className="icon icon-3x icon-bookmark"></i></div>
@@ -20,15 +22,13 @@ export default class PmIdentityList extends React.Component {
       </div>
     ) : (
       <div className="frow">
-        {identities.map((idk) => state.db.idn[idk])
-          .sort((idn0) => idn0.certificate && idn0.certificate.isCa ? -1 : 1)
-          .map((idn0) => (
-            <div className={!idn0.certificate || idn0.certificate.isCa ? "col-md-1-1" : "col-md-1-2"}>
-              <div className="mb-15 mx-5">
-                <PmCsrCard idn={idn0} issuer={state.db.idn[idn0.issuerId]} />
-              </div>
+        {identities.map((idn0) => (
+          <div className={!idn0.certificate || idn0.certificate.isCa ? "col-md-1-1" : "col-md-1-2"}>
+            <div className="mb-15 mx-5">
+              <PmCsrCard idn={idn0} issuer={state.db.idn[idn0.issuerId]} />
             </div>
-          ))}
+          </div>
+        ))}
       </div>
     )
     return (
@@ -40,8 +40,7 @@ export default class PmIdentityList extends React.Component {
             </div>
             <div className="col-xs-1-7">
               <div className="mt-8 text-right">
-                <button class="btn btn-action btn-sm s-circle"
-                  onClick={() => dispatch(addIdn())}>
+                <button class="btn btn-action btn-sm s-circle" onClick={() => dispatch(addIdn())}>
                   <i class="icon icon-plus"></i>
                 </button>
               </div>

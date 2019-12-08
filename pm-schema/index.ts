@@ -40,3 +40,21 @@ export const profilesOf = (ca: PmIdentity): SigningProfile[] => {
     ...Object.keys(signing.profiles).map((pk) => signing.profiles[pk])
   ]
 }
+
+export enum IdentityType {
+  Unassigned, Client, IntCa, RootCa
+}
+
+export const idnTypeOf = (idn: PmIdentity): IdentityType => {
+  if (!idn.certificate) {
+    return IdentityType.Unassigned
+  }
+  if (idn.certificate.isCa) {
+    if (idn.issuerId) {
+      return IdentityType.IntCa
+    } else {
+      return IdentityType.RootCa
+    }
+  }
+  return IdentityType.Client
+}
