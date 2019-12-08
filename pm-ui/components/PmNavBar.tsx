@@ -11,8 +11,7 @@ export default class PmNavBar extends React.Component {
             <header className="navbar">
               <section className="navbar-section">
                 <a className="navbar-brand text-bold mr-2" href="#navbar">PALLID-MASK</a>
-                <a className="btn btn-link" href="#navbar">Docs</a>
-                <a className="btn btn-link" href="https://github.com/picturepan2/spectre">GitHub</a>
+                <a className="btn btn-link" href="https://github.com/vaccovecrana/pallid-mask">GitHub</a>
               </section>
               <section className="navbar-section">
                 <small>
