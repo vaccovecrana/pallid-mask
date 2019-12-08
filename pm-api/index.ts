@@ -1,6 +1,6 @@
 import * as express from "express"
 
-import cfSslService from "pm-api/CfSSLService"
+import cfSslService from "pm-api/CFSSLService"
 import dbService from "pm-api/DbService"
 import {config, logger} from "pm-api/util"
 import {PmApi, PmIdentity, profilesOf} from "pm-schema"

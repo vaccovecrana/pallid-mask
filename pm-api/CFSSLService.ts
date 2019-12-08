@@ -6,7 +6,7 @@ import {logger, tempFile} from "pm-api/util"
 import {PmEncodedCertResponse, PmIdentity} from "pm-schema"
 import {CertificateRequest} from "pm-schema/csr"
 
-const log = logger("CfSSLService")
+const log = logger("CFSSLService")
 
 const procSpawn = (executable: string, cmdArgs: string[]): Promise<string> => {
   log.debug(JSON.stringify(cmdArgs, null, 2))
@@ -20,7 +20,7 @@ const procSpawn = (executable: string, cmdArgs: string[]): Promise<string> => {
   })
 }
 
-class CfSslService {
+class CFSSLService {
 
   public initRootCa(csr: CertificateRequest): Promise<PmEncodedCertResponse> {
     return tempFile("ca_csr", JSON.stringify(csr))
@@ -82,4 +82,4 @@ class CfSslService {
   }
 }
 
-export default new CfSslService()
+export default new CFSSLService()
