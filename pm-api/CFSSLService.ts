@@ -1,4 +1,3 @@
-import {ASN1, PEM} from "@fidm/asn1"
 import {spawn} from "child_process"
 import {StringBuilder} from "typescript-string-operations"
 
@@ -29,18 +28,6 @@ class CFSSLService {
       .then((res) => ({...res, isCa: true}))
   }
 
-  public isCa(csrRes: PmEncodedCertResponse) {
-    const pems = PEM.parse(Buffer.from(csrRes.cert, "utf-8"))
-    const asn1 = ASN1.fromDER(pems[0].body)
-    const keyUsage = asn1.value[0].value[7].value[0].value[1].value[2].value as Buffer
-    if (keyUsage.length >= 4) {
-      const b0 = keyUsage.readInt8(2)
-      const b1 = keyUsage.readInt8(3)
-      return b0 === 1 && b1 === 1
-    }
-    return false
-  }
-
   public initIntCa(csr: CertificateRequest, issuer: PmIdentity, profileTag: string): Promise<PmEncodedCertResponse> {
     const pcaConfigTxt = JSON.stringify(issuer.signingConfig)
     return tempFile("intca_csr", JSON.stringify(csr))
@@ -63,7 +50,7 @@ class CFSSLService {
       ])).then(([bundle, result]) => {
         const signedBundle: PmEncodedCertResponse = JSON.parse(result)
         bundle.cert = signedBundle.cert
-        bundle.isCa = this.isCa(bundle)
+        bundle.isCa = true
         return bundle
       })
   }

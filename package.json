@@ -1,6 +1,6 @@
 {
   "name": "@vaccovecrana/pallid-mask",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "A minimal web front-end for cfssl's REST api.",
   "scripts": {
     "build": "webpack --mode=production --colors --progress",
@@ -20,7 +20,6 @@
   "author": "Vaccove Crana, LLC.",
   "license": "MIT",
   "dependencies": {
-    "@fidm/asn1": "^1.0.4",
     "express": "^4.17.1",
     "frow": "^3.3.0",
     "lowdb": "^1.0.0",
