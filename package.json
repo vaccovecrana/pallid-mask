@@ -23,7 +23,7 @@
     "express": "^4.17.1",
     "frow": "^3.3.0",
     "lowdb": "^1.0.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "pino": "^5.14.0",
     "pino-pretty": "^3.4.0",
     "preact": "^10.0.0",
