@@ -20,7 +20,7 @@
   "author": "Vaccove Crana, LLC.",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "frow": "^3.3.0",
     "lowdb": "^1.0.0",
     "node-fetch": "^2.6.0",
